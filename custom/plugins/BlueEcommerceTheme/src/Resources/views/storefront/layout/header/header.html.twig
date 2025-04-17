@@ -1,0 +1,150 @@
+{% sw_extends '@Storefront/storefront/layout/header/header.html.twig' %}
+
+{% block layout_header %}
+    <header class="header-main" data-sticky-header="true">
+        {% block layout_top_bar %}
+            <div class="header-top-bar">
+                <div class="container">
+                    <div class="top-bar-nav">
+                        <a href="{{ path('frontend.account.login.page') }}">
+                            {{ "account.login"|trans|sw_sanitize }}
+                        </a>
+                        <a href="{{ path('frontend.account.register.page') }}">
+                            {{ "account.register"|trans|sw_sanitize }}
+                        </a>
+                    </div>
+                    <div class="top-bar-contact">
+                        <a href="tel:+123456789">
+                            <span class="icon-stack">
+                                {% include '@Storefront/storefront/utilities/icon.html.twig' with {
+                                    name: 'phone'
+                                } %}
+                            </span>
+                            +123 456 789
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block layout_header_navigation %}
+            <div class="container">
+                <div class="row align-items-center header-row">
+                    {% block layout_header_logo %}
+                        <div class="col-md-2 col-6 header-logo-col">
+                            <div class="header-logo-main">
+                                {% include '@Storefront/storefront/layout/header/logo.html.twig' %}
+                            </div>
+                        </div>
+                    {% endblock %}
+
+                    {% block layout_header_search %}
+                        <div class="col-md-6 col-12 header-search-col">
+                            <div class="header-search">
+                                <form action="{{ path('frontend.search.page') }}" 
+                                      method="get"
+                                      data-search-form="true"
+                                      class="header-search-form">
+                                    {% block layout_header_search_input_group %}
+                                        <input type="search"
+                                               name="search"
+                                               class="form-control"
+                                               autocomplete="off"
+                                               autocapitalize="off"
+                                               placeholder="{{ "header.searchPlaceholder"|trans|sw_sanitize }}"
+                                               aria-label="{{ "header.searchPlaceholder"|trans|sw_sanitize }}"
+                                               value="{{ page.searchTerm }}"
+                                        />
+                                        <button class="btn btn-search" type="submit">
+                                            {% include '@Storefront/storefront/utilities/icon.html.twig' with {
+                                                name: 'search'
+                                            } %}
+                                        </button>
+                                    {% endblock %}
+                                </form>
+                            </div>
+                        </div>
+                    {% endblock %}
+
+                    {% block layout_header_actions %}
+                        <div class="col-md-4 col-6 header-actions-col">
+                            <div class="header-actions">
+                                {% block layout_header_navigation_wishlist %}
+                                    <div class="header-wishlist">
+                                        <a href="{{ path('frontend.wishlist.page') }}"
+                                           title="{{ "header.wishlist"|trans|striptags }}"
+                                           class="btn header-wishlist-btn">
+                                            <span class="icon-stack">
+                                                {% include '@Storefront/storefront/utilities/icon.html.twig' with {
+                                                    name: 'heart'
+                                                } %}
+                                            </span>
+                                            <span class="header-wishlist-text">
+                                                {{ "header.wishlist"|trans|sw_sanitize }}
+                                            </span>
+                                        </a>
+                                    </div>
+                                {% endblock %}
+
+                                {% block layout_header_navigation_account %}
+                                    <div class="header-account">
+                                        <a href="{{ path('frontend.account.home.page') }}"
+                                           title="{{ "account.myAccount"|trans|striptags }}"
+                                           class="btn header-account-btn">
+                                            <span class="icon-stack">
+                                                {% include '@Storefront/storefront/utilities/icon.html.twig' with {
+                                                    name: 'avatar'
+                                                } %}
+                                            </span>
+                                            <span class="header-account-text">
+                                                {{ "account.myAccount"|trans|sw_sanitize }}
+                                            </span>
+                                        </a>
+                                    </div>
+                                {% endblock %}
+
+                                {% block layout_header_navigation_cart %}
+                                    <div class="header-cart" data-offcanvas-cart="true">
+                                        <a class="btn header-cart-btn"
+                                           href="{{ path('frontend.checkout.cart.page') }}"
+                                           data-cart-widget="true">
+                                            <span class="header-cart-icon">
+                                                <span class="icon-stack position-relative">
+                                                    {% include '@Storefront/storefront/utilities/icon.html.twig' with {
+                                                        name: 'bag'
+                                                    } %}
+                                                    <span class="header-cart-badge">
+                                                        {{ page.cart.quantity }}
+                                                    </span>
+                                                </span>
+                                            </span>
+                                            <span class="header-cart-total">
+                                                {{ page.cart.price.positionPrice|currency }}
+                                            </span>
+                                        </a>
+                                    </div>
+                                {% endblock %}
+                            </div>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block layout_main_navigation %}
+            <div class="main-navigation" id="mainNavigation" data-flyout-menu="true">
+                <div class="container">
+                    <nav class="main-navigation-menu">
+                        {% block layout_main_navigation_navbar %}
+                            <div class="collapse navbar-collapse">
+                                {% block layout_main_navigation_categories %}
+                                    {{ include('@Storefront/storefront/layout/navigation/categories.html.twig') }}
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+                    </nav>
+                </div>
+            </div>
+        {% endblock %}
+    </header>
+{% endblock %}

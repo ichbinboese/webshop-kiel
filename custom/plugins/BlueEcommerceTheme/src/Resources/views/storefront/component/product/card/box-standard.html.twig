@@ -1,0 +1,187 @@
+{% sw_extends '@Storefront/storefront/component/product/card/box-standard.html.twig' %}
+
+{% block component_product_box %}
+    <div class="product-box box-{{ layout }}">
+        {% block component_product_box_content %}
+            <div class="card">
+                {% block component_product_box_badges %}
+                    {% if product.markAsTopseller %}
+                        <div class="product-badges">
+                            <div class="badge badge-bestseller">
+                                {{ "listing.boxLabelTopseller"|trans|sw_sanitize }}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if product.calculation and product.calculation.listPrice.percentage > 0 %}
+                        <div class="product-badges">
+                            <div class="badge badge-discount">
+                                -{{ product.calculation.listPrice.percentage|round }}%
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if product.isNew %}
+                        <div class="product-badges">
+                            <div class="badge badge-new">
+                                {{ "listing.boxLabelNew"|trans|sw_sanitize }}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+                <div class="product-wishlist">
+                    <button class="btn btn-wishlist" title="{{ "listing.boxProductWishlist"|trans|striptags }}">
+                        {% include '@Storefront/storefront/utilities/icon.html.twig' with {
+                            name: 'heart'
+                        } %}
+                    </button>
+                </div>
+
+                {% block component_product_box_image %}
+                    <div class="product-image-wrapper">
+                        <a href="{{ seoUrl('frontend.detail.page', {'productId': product.id}) }}"
+                           title="{{ product.translated.name }}"
+                           class="product-image-link">
+                            {% if product.cover.media %}
+                                {% set attributes = {
+                                    'class': 'product-image',
+                                    'alt': product.translated.name,
+                                    'title': product.translated.name
+                                } %}
+
+                                {% include '@Storefront/storefront/utilities/thumbnail.html.twig' with {
+                                    media: product.cover.media,
+                                    sizes: {
+                                        'xs': '500px',
+                                        'sm': '500px',
+                                        'md': '500px',
+                                        'lg': '500px'
+                                    }
+                                } %}
+                            {% endif %}
+                        </a>
+
+                        <div class="product-quickview">
+                            <a href="{{ seoUrl('frontend.detail.page', {'productId': product.id}) }}"
+                               class="btn btn-quickview">
+                                {{ "listing.boxProductQuickview"|trans|sw_sanitize }}
+                            </a>
+                        </div>
+                    </div>
+                {% endblock %}
+
+                {% block component_product_box_info %}
+                    <div class="card-body">
+                        <div class="product-info">
+                            {% if product.manufacturer %}
+                                <div class="product-manufacturer">
+                                    {{ product.manufacturer.translated.name }}
+                                </div>
+                            {% endif %}
+
+                            {% block component_product_box_name %}
+                                <div class="product-title">
+                                    <a href="{{ seoUrl('frontend.detail.page', {'productId': product.id}) }}"
+                                       title="{{ product.translated.name }}">
+                                        {{ product.translated.name }}
+                                    </a>
+                                </div>
+                            {% endblock %}
+
+                            {% block component_product_box_description %}
+                                <div class="product-description">
+                                    {{ product.translated.description|striptags|u.truncate(160) }}
+                                </div>
+                            {% endblock %}
+
+                            {% block component_product_box_rating %}
+                                {% if product.ratingAverage %}
+                                    <div class="product-rating">
+                                        <div class="product-rating-stars" title="{{ "listing.boxRatingText"|trans({'%rating%': product.ratingAverage})|striptags }}">
+                                            {% for i in 1..5 %}
+                                                {% set starClass = 'star' %}
+                                                {% if i <= product.ratingAverage %}
+                                                    {% set starClass = 'star-fill' %}
+                                                {% elseif i - 0.5 <= product.ratingAverage %}
+                                                    {% set starClass = 'star-half' %}
+                                                {% endif %}
+                                                {% include '@Storefront/storefront/utilities/icon.html.twig' with {
+                                                    name: starClass
+                                                } %}
+                                            {% endfor %}
+                                        </div>
+                                        <span class="product-rating-count">
+                                            ({{ product.reviewCount }})
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+                        </div>
+
+                        {% block component_product_box_price %}
+                            <div class="product-price-info">
+                                {% block component_product_box_price_unit %}
+                                    {% if product.purchaseUnit and product.referenceUnit %}
+                                        <div class="product-price-unit">
+                                            {{ "listing.boxItemContent"|trans|sw_sanitize }}: {{ product.purchaseUnit }} {{ product.unit.translated.name }}
+                                            {% if product.purchaseUnit != product.referenceUnit %}
+                                                ({{ (product.price.calculated.unitPrice / product.referenceUnit)|currency }}
+                                                {{ "general.unitName"|trans|sw_sanitize }}/{{ product.unit.translated.name }})
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endblock %}
+
+                                {% block component_product_box_price_detail %}
+                                    <div class="product-price">
+                                        {% if product.calculation and product.calculation.listPrice.percentage > 0 %}
+                                            <span class="product-price-was">
+                                                {{ product.calculation.listPrice.price|currency }}
+                                            </span>
+                                        {% endif %}
+
+                                        <span class="product-price-regular">
+                                            {{ product.calculatedPrice.unitPrice|currency }}
+                                        </span>
+                                    </div>
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+
+                        {% block component_product_box_action %}
+                            <div class="product-action">
+                                {% if product.availableStock >= product.minPurchase and product.childCount <= 0 %}
+                                    <form action="{{ path('frontend.checkout.line-item.add') }}"
+                                          method="post"
+                                          class="buy-widget"
+                                          data-add-to-cart="true">
+
+                                        {% block component_product_box_action_form %}
+                                            <input type="hidden" name="redirectTo" value="frontend.cart.offcanvas"/>
+                                            <input type="hidden" name="lineItems[{{ product.id }}][id]" value="{{ product.id }}"/>
+                                            <input type="hidden" name="lineItems[{{ product.id }}][quantity]" value="{{ product.minPurchase }}"/>
+
+                                            <button class="btn btn-buy" title="{{ "listing.boxProductDetails"|trans|striptags }}">
+                                                {% include '@Storefront/storefront/utilities/icon.html.twig' with {
+                                                    name: 'bag'
+                                                } %}
+                                                {{ "listing.boxProductDetails"|trans|sw_sanitize }}
+                                            </button>
+                                        {% endblock %}
+                                    </form>
+                                {% else %}
+                                    <a href="{{ seoUrl('frontend.detail.page', {'productId': product.id}) }}"
+                                       class="btn btn-buy"
+                                       title="{{ "listing.boxProductDetails"|trans|striptags }}">
+                                        {{ "listing.boxProductDetails"|trans|sw_sanitize }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,364 @@
+{% sw_extends '@Storefront/storefront/page/product-detail/index.html.twig' %}
+
+{% block page_product_detail %}
+    <div class="product-detail-page">
+        {% block page_product_detail_content %}
+            <div class="product-detail-content">
+                {% block page_product_detail_headline %}
+                    <div class="row product-detail-headline">
+                        {% block page_product_detail_breadcrumb %}
+                            <div class="col-12 product-detail-breadcrumb">
+                                {% sw_include '@Storefront/storefront/layout/breadcrumb.html.twig' with {
+                                    breadcrumbCategories: page.product.categories
+                                } %}
+                            </div>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
+                <div class="row product-detail-main">
+                    {% block page_product_detail_media %}
+                        <div class="col-lg-6 product-detail-media">
+                            {% block page_product_detail_media_content %}
+                                {% if page.product.media %}
+                                    <div class="gallery-slider-container"
+                                         data-gallery-slider-container="true">
+                                        {% block page_product_detail_slider %}
+                                            <div class="gallery-slider"
+                                                 data-gallery-slider="true">
+                                                {% block page_product_detail_slider_items %}
+                                                    {% for media in page.product.media %}
+                                                        <div class="gallery-slider-item">
+                                                            {% block page_product_detail_slider_item %}
+                                                                {% sw_thumbnails 'gallery-slider-image-thumbnails' with {
+                                                                    media: media,
+                                                                    sizes: {
+                                                                        'xs': '500px',
+                                                                        'sm': '800px',
+                                                                        'md': '1040px',
+                                                                        'lg': '1040px'
+                                                                    }
+                                                                } %}
+                                                            {% endblock %}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endblock %}
+                                            </div>
+                                        {% endblock %}
+
+                                        {% block page_product_detail_slider_thumbnails %}
+                                            {% if page.product.media|length > 1 %}
+                                                <div class="gallery-slider-thumbnails">
+                                                    {% block page_product_detail_slider_thumbnails_items %}
+                                                        {% for media in page.product.media %}
+                                                            <div class="gallery-slider-thumbnails-item">
+                                                                {% block page_product_detail_slider_thumbnails_item %}
+                                                                    {% sw_thumbnails 'gallery-slider-thumbnails-image' with {
+                                                                        media: media,
+                                                                        sizes: {
+                                                                            'xs': '70px',
+                                                                            'sm': '70px',
+                                                                            'md': '70px',
+                                                                            'lg': '70px'
+                                                                        }
+                                                                    } %}
+                                                                {% endblock %}
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% endblock %}
+                                                </div>
+                                            {% endif %}
+                                        {% endblock %}
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+                            
+                            {% block page_product_detail_media_badges %}
+                                <div class="product-detail-badges">
+                                    {% if page.product.markAsTopseller %}
+                                        <div class="badge badge-bestseller">
+                                            {{ "listing.boxLabelTopseller"|trans|sw_sanitize }}
+                                        </div>
+                                    {% endif %}
+
+                                    {% if page.product.calculation and page.product.calculation.listPrice.percentage > 0 %}
+                                        <div class="badge badge-discount">
+                                            -{{ page.product.calculation.listPrice.percentage|round }}%
+                                        </div>
+                                    {% endif %}
+
+                                    {% if page.product.isNew %}
+                                        <div class="badge badge-new">
+                                            {{ "listing.boxLabelNew"|trans|sw_sanitize }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+
+                    {% block page_product_detail_info %}
+                        <div class="col-lg-6 product-detail-info">
+                            {% block page_product_detail_manufacturer %}
+                                {% if page.product.manufacturer %}
+                                    <div class="product-detail-manufacturer">
+                                        {{ page.product.manufacturer.translated.name }}
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+
+                            {% block page_product_detail_name_container %}
+                                <h1 class="product-detail-name">
+                                    {{ page.product.translated.name }}
+                                </h1>
+                            {% endblock %}
+
+                            {% block page_product_detail_reviews %}
+                                {% if page.product.ratingAverage %}
+                                    <div class="product-detail-rating">
+                                        <div class="product-detail-rating-stars">
+                                            {% for i in 1..5 %}
+                                                {% set starClass = 'star' %}
+                                                {% if i <= page.product.ratingAverage %}
+                                                    {% set starClass = 'star-fill' %}
+                                                {% elseif i - 0.5 <= page.product.ratingAverage %}
+                                                    {% set starClass = 'star-half' %}
+                                                {% endif %}
+                                                {% sw_icon starClass %}
+                                            {% endfor %}
+                                        </div>
+                                        <span class="product-detail-rating-point">
+                                            {{ page.product.ratingAverage }}
+                                        </span>
+                                        <span class="product-detail-rating-count">
+                                            ({{ page.product.reviewCount }} {{ "detail.reviewCount"|trans|sw_sanitize }})
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+
+                            {% block page_product_detail_price_container %}
+                                <div class="product-detail-price-container">
+                                    {% block page_product_detail_price %}
+                                        <div class="product-detail-price">
+                                            {% if page.product.calculation and page.product.calculation.listPrice.percentage > 0 %}
+                                                <span class="product-detail-was-price">
+                                                    {{ page.product.calculation.listPrice.price|currency }}
+                                                </span>
+                                            {% endif %}
+                                            {{ page.product.calculatedPrice.unitPrice|currency }}
+                                        </div>
+                                    {% endblock %}
+
+                                    {% block page_product_detail_tax %}
+                                        <div class="product-detail-tax">
+                                            {{ "general.includeVat"|trans|sw_sanitize }}
+                                        </div>
+                                    {% endblock %}
+
+                                    {% block page_product_detail_price_unit %}
+                                        {% if page.product.purchaseUnit and page.product.referenceUnit %}
+                                            <div class="product-price-unit">
+                                                {{ "detail.priceUnitContent"|trans|sw_sanitize }}: {{ page.product.purchaseUnit }} {{ page.product.unit.translated.name }}
+                                                {% if page.product.purchaseUnit != page.product.referenceUnit %}
+                                                    ({{ (page.product.calculatedPrice.unitPrice / page.product.referenceUnit)|currency }}
+                                                    {{ "general.unitName"|trans|sw_sanitize }}/{{ page.product.unit.translated.name }})
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+
+                            {% block page_product_detail_delivery_informations %}
+                                <div class="product-detail-delivery-information">
+                                    {% if page.product.shippingFree %}
+                                        <div class="delivery-information-shipping-free">
+                                            {% sw_icon 'truck' %}
+                                            {{ "detail.shippingFree"|trans|sw_sanitize }}
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="delivery-information-stock {% if page.product.availableStock < page.product.minPurchase %}not-available{% endif %}">
+                                        {% if page.product.availableStock < page.product.minPurchase %}
+                                            {% sw_icon 'x-circle' %}
+                                            {{ "detail.notAvailable"|trans|sw_sanitize }}
+                                        {% else %}
+                                            {% sw_icon 'check-circle' %}
+                                            {{ "detail.inStock"|trans|sw_sanitize }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endblock %}
+
+                            {% block page_product_detail_configurator_container %}
+                                {% if page.product.parentId and page.configuratorSettings|length > 0 %}
+                                    <div class="product-detail-configurator-container">
+                                        {% block page_product_detail_configurator %}
+                                            {% for group in page.configuratorSettings|groupByObject('option.group') %}
+                                                <div class="product-detail-configurator-group">
+                                                    <div class="product-detail-configurator-group-title">
+                                                        {{ group[0].option.group.translated.name }}
+                                                    </div>
+                                                    <div class="product-detail-configurator-options">
+                                                        {% for setting in group %}
+                                                            <div class="product-detail-configurator-option {% if setting.option.colorHexCode %}is-color{% endif %}">
+                                                                <input type="radio"
+                                                                       id="option-{{ setting.option.id }}"
+                                                                       name="optionId"
+                                                                       value="{{ setting.option.id }}"
+                                                                       class="product-detail-configurator-option-input"
+                                                                       {% if setting.optionId == page.product.optionIds[setting.option.groupId] %}checked="checked"{% endif %}>
+                                                                
+                                                                <label for="option-{{ setting.option.id }}" class="product-detail-configurator-option-label">
+                                                                    {% if setting.option.colorHexCode %}
+                                                                        <span class="color-circle" style="background-color: {{ setting.option.colorHexCode }}"></span>
+                                                                    {% else %}
+                                                                        {{ setting.option.translated.name }}
+                                                                    {% endif %}
+                                                                </label>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endblock %}
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+
+                            {% block page_product_detail_buy %}
+                                <div class="product-detail-buy">
+                                    {% if page.product.availableStock >= page.product.minPurchase %}
+                                        <form action="{{ path('frontend.checkout.line-item.add') }}"
+                                              method="post"
+                                              class="buy-widget"
+                                              data-add-to-cart="true">
+
+                                            {% block page_product_detail_quantity %}
+                                                <div class="product-detail-quantity">
+                                                    <div class="product-detail-quantity-title">
+                                                        {{ "detail.quantityLabel"|trans|sw_sanitize }}
+                                                    </div>
+                                                    <div class="product-detail-quantity-select">
+                                                        <select name="lineItems[{{ page.product.id }}][quantity]"
+                                                                class="quantity-select custom-select">
+                                                            {% for quantity in range(page.product.minPurchase, page.product.calculatedMaxPurchase, page.product.purchaseSteps) %}
+                                                                <option value="{{ quantity }}">
+                                                                    {{ quantity }}
+                                                                </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            {% endblock %}
+
+                                            <input type="hidden" name="redirectTo" value="frontend.detail.page"/>
+                                            <input type="hidden" name="lineItems[{{ page.product.id }}][id]" value="{{ page.product.id }}"/>
+
+                                            <button class="btn btn-buy" title="{{ "detail.addToCart"|trans|striptags }}">
+                                                {% sw_icon 'bag' %}
+                                                {{ "detail.addToCart"|trans|sw_sanitize }}
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        <button class="btn btn-buy" disabled>
+                                            {{ "detail.notAvailable"|trans|sw_sanitize }}
+                                        </button>
+                                    {% endif %}
+
+                                    <div class="product-detail-wishlists">
+                                        <button class="btn btn-wishlist" title="{{ "detail.addToWishlist"|trans|striptags }}">
+                                            {% sw_icon 'heart' %}
+                                            {{ "detail.addToWishlist"|trans|sw_sanitize }}
+                                        </button>
+                                        <button class="btn btn-compare" title="{{ "detail.addToCompare"|trans|striptags }}">
+                                            {% sw_icon 'arrow-right-arrow-left' %}
+                                            {{ "detail.addToCompare"|trans|sw_sanitize }}
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                </div>
+
+                {% block page_product_detail_tabs %}
+                    <div class="product-detail-tabs">
+                        <ul class="nav nav-tabs product-detail-tab-navigation" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description-tab-pane" role="tab" aria-controls="description-tab-pane" aria-selected="true">
+                                    {{ "detail.tabDescription"|trans|sw_sanitize }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="specifications-tab" data-toggle="tab" href="#specifications-tab-pane" role="tab" aria-controls="specifications-tab-pane" aria-selected="false">
+                                    {{ "detail.tabSpecifications"|trans|sw_sanitize }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="reviews-tab" data-toggle="tab" href="#reviews-tab-pane" role="tab" aria-controls="reviews-tab-pane" aria-selected="false">
+                                    {{ "detail.tabReviews"|trans|sw_sanitize }}
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content product-detail-tab-content">
+                            <div class="tab-pane fade show active" id="description-tab-pane" role="tabpanel" aria-labelledby="description-tab">
+                                <div class="product-detail-description-text">
+                                    {{ page.product.translated.description|raw }}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="specifications-tab-pane" role="tabpanel" aria-labelledby="specifications-tab">
+                                {% if page.product.sortedProperties %}
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            {% for property in page.product.sortedProperties %}
+                                                <tr>
+                                                    <th>{{ property.group.translated.name }}</th>
+                                                    <td>{{ property.translated.name }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% else %}
+                                    <div class="alert alert-info">
+                                        {{ "detail.noSpecifications"|trans|sw_sanitize }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade" id="reviews-tab-pane" role="tabpanel" aria-labelledby="reviews-tab">
+                                {% sw_include '@Storefront/storefront/page/product-detail/review/review.html.twig' %}
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+
+                {% block page_product_detail_cross_selling %}
+                    {% if page.crossSellings|length > 0 %}
+                        <div class="product-detail-cross-selling">
+                            {% for crossSelling in page.crossSellings %}
+                                {% if crossSelling.products|length > 0 %}
+                                    <div class="cross-selling-element">
+                                        <h2 class="product-detail-cross-selling-title">
+                                            {{ crossSelling.translated.name }}
+                                        </h2>
+                                        <div class="row product-listing">
+                                            {% for product in crossSelling.products %}
+                                                <div class="col-sm-6 col-lg-3">
+                                                    {% sw_include '@Storefront/storefront/component/product/card/box-standard.html.twig' with {
+                                                        'product': product
+                                                    } %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

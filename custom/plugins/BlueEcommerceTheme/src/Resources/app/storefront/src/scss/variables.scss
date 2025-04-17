@@ -1,0 +1,64 @@
+// Theme Colors
+$sw-color-brand-primary: #005EB8;  // Main blue color
+$sw-color-brand-secondary: #0072CE;  // Secondary blue
+$sw-color-accent: #00B0F0;  // Accent blue
+$sw-color-light-blue: #E6F2FF;  // Light blue for backgrounds
+
+// Text and background colors
+$sw-text-color: #333333;
+$sw-text-color-light: #666666;
+$sw-background-color: #FFFFFF;
+$sw-background-color-light: #F5F5F5;
+
+// Price colors
+$sw-color-price: #005EB8;
+$sw-color-price-discount: #FF5A00;  // Orange for sale prices
+
+// Alert and notification colors
+$sw-color-success: #28a745;
+$sw-color-info: #17a2b8;
+$sw-color-warning: #ffc107;
+$sw-color-danger: #dc3545;
+
+// Border and shadows
+$sw-border-color: #DDDDDD;
+$sw-border-radius: 4px;
+$sw-card-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+$sw-card-shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.12);
+
+// Navigation
+$sw-nav-background: #005EB8;
+$sw-nav-text-color: #FFFFFF;
+$sw-nav-hover-background: darken($sw-nav-background, 5%);
+
+// Footer
+$sw-footer-background: #003B72;
+$sw-footer-text-color: #FFFFFF;
+
+// Typography
+$sw-font-family-base: "'Open Sans', sans-serif";
+$sw-font-size-base: 1rem;
+$sw-font-size-sm: 0.875rem;
+$sw-font-size-lg: 1.125rem;
+$sw-font-size-xl: 1.25rem;
+$sw-font-size-h1: 2rem;
+$sw-font-size-h2: 1.75rem;
+$sw-font-size-h3: 1.5rem;
+$sw-font-size-h4: 1.25rem;
+$sw-font-size-h5: 1.125rem;
+$sw-font-size-h6: 1rem;
+
+// Spacing
+$sw-spacer-xs: 0.25rem;  // 4px
+$sw-spacer-sm: 0.5rem;   // 8px
+$sw-spacer: 1rem;        // 16px
+$sw-spacer-md: 1.5rem;   // 24px
+$sw-spacer-lg: 2rem;     // 32px
+$sw-spacer-xl: 3rem;     // 48px
+
+// Breakpoints (matching Bootstrap)
+$sw-breakpoint-xs: 0;
+$sw-breakpoint-sm: 576px;
+$sw-breakpoint-md: 768px;
+$sw-breakpoint-lg: 992px;
+$sw-breakpoint-xl: 1200px;

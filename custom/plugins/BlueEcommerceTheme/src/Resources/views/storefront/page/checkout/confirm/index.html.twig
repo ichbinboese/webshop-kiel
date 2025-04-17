@@ -1,0 +1,303 @@
+{% sw_extends '@Storefront/storefront/page/checkout/confirm/index.html.twig' %}
+
+{% block page_checkout_confirm %}
+    <div class="checkout">
+        {% block page_checkout_confirm_header %}
+            <div class="checkout-header">
+                <h1 class="checkout-header-title">{{ "checkout.confirmHeader"|trans|sw_sanitize }}</h1>
+            </div>
+        {% endblock %}
+
+        {% block page_checkout_confirm_steps %}
+            <div class="checkout-steps">
+                <div class="checkout-step">
+                    <div class="checkout-step-circle">
+                        <span>1</span>
+                    </div>
+                    <div class="checkout-step-title">
+                        {{ "checkout.stepCart"|trans|sw_sanitize }}
+                    </div>
+                </div>
+                <div class="checkout-step">
+                    <div class="checkout-step-circle">
+                        <span>2</span>
+                    </div>
+                    <div class="checkout-step-title">
+                        {{ "checkout.stepAddress"|trans|sw_sanitize }}
+                    </div>
+                </div>
+                <div class="checkout-step active">
+                    <div class="checkout-step-circle">
+                        <span>3</span>
+                    </div>
+                    <div class="checkout-step-title">
+                        {{ "checkout.stepConfirm"|trans|sw_sanitize }}
+                    </div>
+                </div>
+                <div class="checkout-step">
+                    <div class="checkout-step-circle">
+                        <span>4</span>
+                    </div>
+                    <div class="checkout-step-title">
+                        {{ "checkout.stepComplete"|trans|sw_sanitize }}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block page_checkout_confirm_content %}
+            <div class="row">
+                {% block page_checkout_confirm_main %}
+                    <div class="col-lg-8 checkout-main">
+                        {% block page_checkout_confirm_address %}
+                            <div class="checkout-card">
+                                <div class="checkout-card-title">
+                                    <div class="checkout-card-title-number">1</div>
+                                    {{ "checkout.confirmAddressHeader"|trans|sw_sanitize }}
+                                </div>
+                                <div class="checkout-card-body">
+                                    <div class="row">
+                                        {% block page_checkout_confirm_address_billing %}
+                                            <div class="col-md-6">
+                                                <div class="checkout-card-title">{{ "checkout.billingAddressHeader"|trans|sw_sanitize }}</div>
+                                                {% sw_include '@Storefront/storefront/component/address/address.html.twig' with {'address': page.customer.activeBillingAddress} %}
+                                                <a href="{{ path('frontend.account.address.edit.page', {'addressId': page.customer.activeBillingAddress.id, 'redirectTo': 'frontend.checkout.confirm.page'}) }}" class="btn btn-sm btn-outline-primary">
+                                                    {{ "checkout.changeBillingAddress"|trans|sw_sanitize }}
+                                                </a>
+                                            </div>
+                                        {% endblock %}
+
+                                        {% block page_checkout_confirm_address_shipping %}
+                                            <div class="col-md-6">
+                                                <div class="checkout-card-title">{{ "checkout.shippingAddressHeader"|trans|sw_sanitize }}</div>
+                                                {% if page.customer.activeBillingAddress.id == page.customer.activeShippingAddress.id %}
+                                                    <div class="shipping-address-same-as-billing">
+                                                        {{ "checkout.shippingSameAsBilling"|trans|sw_sanitize }}
+                                                    </div>
+                                                {% else %}
+                                                    {% sw_include '@Storefront/storefront/component/address/address.html.twig' with {'address': page.customer.activeShippingAddress} %}
+                                                {% endif %}
+                                                <a href="{{ path('frontend.account.address.edit.page', {'addressId': page.customer.activeShippingAddress.id, 'redirectTo': 'frontend.checkout.confirm.page'}) }}" class="btn btn-sm btn-outline-primary">
+                                                    {{ "checkout.changeShippingAddress"|trans|sw_sanitize }}
+                                                </a>
+                                            </div>
+                                        {% endblock %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+
+                        {% block page_checkout_confirm_payment %}
+                            <div class="checkout-card">
+                                <div class="checkout-card-title">
+                                    <div class="checkout-card-title-number">2</div>
+                                    {{ "checkout.confirmPaymentHeader"|trans|sw_sanitize }}
+                                </div>
+                                <div class="checkout-card-body">
+                                    <div class="checkout-payment-method">
+                                        {% for payment in page.paymentMethods %}
+                                            <div class="checkout-method-group">
+                                                <div class="custom-radio">
+                                                    <input type="radio" id="paymentMethod{{ payment.id }}" name="paymentMethodId" value="{{ payment.id }}" 
+                                                           class="checkout-method-input"
+                                                           {% if payment.id == context.paymentMethod.id %} checked="checked"{% endif %}>
+                                                    <label for="paymentMethod{{ payment.id }}" class="checkout-method-label">
+                                                        <div class="checkout-method-icon">
+                                                            {% if payment.media %}
+                                                                {% sw_thumbnails 'payment-method-image' with {
+                                                                    media: payment.media,
+                                                                    sizes: {
+                                                                        'default': '40px'
+                                                                    }
+                                                                } %}
+                                                            {% else %}
+                                                                {% sw_icon 'credit-card' %}
+                                                            {% endif %}
+                                                        </div>
+                                                        <span class="checkout-method-name">{{ payment.translated.name }}</span>
+                                                        {% if payment.translated.description %}
+                                                            <span class="checkout-method-description">{{ payment.translated.description }}</span>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+
+                        {% block page_checkout_confirm_shipping %}
+                            <div class="checkout-card">
+                                <div class="checkout-card-title">
+                                    <div class="checkout-card-title-number">3</div>
+                                    {{ "checkout.confirmShippingHeader"|trans|sw_sanitize }}
+                                </div>
+                                <div class="checkout-card-body">
+                                    <div class="checkout-shipping-method">
+                                        {% for shipping in page.shippingMethods %}
+                                            <div class="checkout-method-group">
+                                                <div class="custom-radio">
+                                                    <input type="radio" id="shippingMethod{{ shipping.id }}" name="shippingMethodId" value="{{ shipping.id }}" 
+                                                           class="checkout-method-input"
+                                                           {% if shipping.id == context.shippingMethod.id %} checked="checked"{% endif %}>
+                                                    <label for="shippingMethod{{ shipping.id }}" class="checkout-method-label">
+                                                        <div class="checkout-method-icon">
+                                                            {% if shipping.media %}
+                                                                {% sw_thumbnails 'shipping-method-image' with {
+                                                                    media: shipping.media,
+                                                                    sizes: {
+                                                                        'default': '40px'
+                                                                    }
+                                                                } %}
+                                                            {% else %}
+                                                                {% sw_icon 'truck' %}
+                                                            {% endif %}
+                                                        </div>
+                                                        <span class="checkout-method-name">{{ shipping.translated.name }}</span>
+                                                        {% if shipping.translated.description %}
+                                                            <span class="checkout-method-description">{{ shipping.translated.description }}</span>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+
+                        {% block page_checkout_confirm_tos %}
+                            <div class="checkout-card">
+                                <div class="checkout-card-title">
+                                    <div class="checkout-card-title-number">4</div>
+                                    {{ "checkout.confirmTermsHeader"|trans|sw_sanitize }}
+                                </div>
+                                <div class="checkout-card-body">
+                                    <div class="checkout-confirm-tos">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" id="tos" name="tos" required class="custom-control-input">
+                                            <label for="tos" class="custom-control-label">
+                                                {{ "checkout.confirmTerms"|trans({
+                                                    '%tosUrl%': path('frontend.cms.page', { id: config('core.basicInformation.tosPage') })
+                                                })|raw }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="checkout-confirm-actions">
+                                        <a href="{{ path('frontend.checkout.cart.page') }}" class="checkout-back-link">
+                                            {% sw_icon 'arrow-left' %}
+                                            {{ "checkout.confirmBackToCart"|trans|sw_sanitize }}
+                                        </a>
+                                        
+                                        <button type="submit" class="btn btn-primary btn-checkout-confirm">
+                                            {{ "checkout.confirmSubmit"|trans|sw_sanitize }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+
+                {% block page_checkout_confirm_sidebar %}
+                    <div class="col-lg-4">
+                        <div class="checkout-aside">
+                            <div class="checkout-aside-header">
+                                <div class="checkout-aside-title">
+                                    {{ "checkout.summaryHeader"|trans|sw_sanitize }}
+                                </div>
+                                <a href="{{ path('frontend.checkout.cart.page') }}" class="checkout-aside-edit">
+                                    {{ "checkout.summaryEdit"|trans|sw_sanitize }}
+                                </a>
+                            </div>
+                            
+                            <div class="checkout-aside-items">
+                                {% for lineItem in page.cart.lineItems %}
+                                    <div class="checkout-aside-item">
+                                        <div class="checkout-aside-item-img">
+                                            {% if lineItem.cover %}
+                                                {% sw_thumbnails 'checkout-aside-item-image' with {
+                                                    media: lineItem.cover,
+                                                    sizes: {
+                                                        'default': '60px'
+                                                    }
+                                                } %}
+                                            {% endif %}
+                                        </div>
+                                        <div class="checkout-aside-item-info">
+                                            <div class="checkout-aside-item-title">
+                                                {{ lineItem.label }}
+                                            </div>
+                                            
+                                            {% if lineItem.payload.options|length > 0 %}
+                                                <div class="checkout-aside-item-variant">
+                                                    {% for option in lineItem.payload.options %}
+                                                        {{ option.group }}: {{ option.option }}{% if not loop.last %} | {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                            
+                                            <div class="checkout-aside-item-quantity">
+                                                {{ "checkout.cartQuantity"|trans|sw_sanitize }}: {{ lineItem.quantity }}
+                                            </div>
+                                        </div>
+                                        <div class="checkout-aside-item-price">
+                                            {{ lineItem.price.totalPrice|currency }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="checkout-aside-summary">
+                                <div class="checkout-aside-summary-row">
+                                    <span class="checkout-aside-summary-label">{{ "checkout.summarySubtotal"|trans|sw_sanitize }}</span>
+                                    <span class="checkout-aside-summary-value">{{ page.cart.price.positionPrice|currency }}</span>
+                                </div>
+                                
+                                {% if page.cart.deliveries|length > 0 %}
+                                    <div class="checkout-aside-summary-row">
+                                        <span class="checkout-aside-summary-label">{{ "checkout.summaryShipping"|trans|sw_sanitize }}</span>
+                                        <span class="checkout-aside-summary-value">{{ page.cart.deliveries.first.shippingCosts.totalPrice|currency }}</span>
+                                    </div>
+                                {% endif %}
+                                
+                                {% if page.cart.price.taxStatus != "tax-free" %}
+                                    {% for calculatedTax in page.cart.price.calculatedTaxes %}
+                                        <div class="checkout-aside-summary-row">
+                                            <span class="checkout-aside-summary-label">{{ "checkout.summaryTax"|trans({'%rate%': calculatedTax.taxRate})|sw_sanitize }}</span>
+                                            <span class="checkout-aside-summary-value">{{ calculatedTax.tax|currency }}</span>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                
+                                {% for promotion in page.cart.lineItems %}
+                                    {% if promotion.type == "promotion" %}
+                                        <div class="checkout-aside-summary-row">
+                                            <span class="checkout-aside-summary-label">{{ promotion.label }}</span>
+                                            <span class="checkout-aside-summary-value">{{ promotion.price.totalPrice|currency }}</span>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                <div class="checkout-aside-summary-row checkout-aside-summary-total">
+                                    <span class="checkout-aside-summary-label">{{ "checkout.summaryTotal"|trans|sw_sanitize }}</span>
+                                    <span class="checkout-aside-summary-value">{{ page.cart.price.totalPrice|currency }}</span>
+                                </div>
+                                
+                                <div class="checkout-aside-summary-tax-info">
+                                    {% if page.cart.price.taxStatus == "tax-free" %}
+                                        {{ "general.noTaxes"|trans|sw_sanitize }}
+                                    {% else %}
+                                        {{ "general.includeVat"|trans|sw_sanitize }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}
