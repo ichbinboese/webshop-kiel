@@ -1,0 +1,273 @@
+{% sw_extends '@Storefront/storefront/page/checkout/cart/index.html.twig' %}
+
+{% block page_checkout_cart %}
+    <div class="checkout-cart">
+        {% block page_checkout_cart_header %}
+            <div class="cart-header">
+                <h1 class="cart-header-title">{{ "checkout.cartHeader"|trans|sw_sanitize }}</h1>
+                <div class="cart-header-info">
+                    {{ "checkout.cartHeaderInfo"|trans|sw_sanitize }}
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block page_checkout_cart_main %}
+            <div class="row">
+                {% block page_checkout_cart_table %}
+                    <div class="col-lg-8">
+                        {% if page.cart.lineItems|length > 0 %}
+                            <div class="card checkout-card">
+                                <div class="card-body">
+                                    {% block page_checkout_cart_items %}
+                                        <div class="cart-items-container">
+                                            <table class="cart-items-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th colspan="2">{{ "checkout.cartHeaderProduct"|trans|sw_sanitize }}</th>
+                                                        <th>{{ "checkout.cartHeaderUnitPrice"|trans|sw_sanitize }}</th>
+                                                        <th>{{ "checkout.cartHeaderQuantity"|trans|sw_sanitize }}</th>
+                                                        <th>{{ "checkout.cartHeaderTotalPrice"|trans|sw_sanitize }}</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for lineItem in page.cart.lineItems %}
+                                                        {% block page_checkout_cart_line_item %}
+                                                            <tr class="cart-item-row">
+                                                                {% block page_checkout_cart_line_item_image %}
+                                                                    <td class="cart-item-img">
+                                                                        {% if lineItem.cover %}
+                                                                            <a href="{{ seoUrl('frontend.detail.page', {'productId': lineItem.referencedId}) }}">
+                                                                                {% sw_thumbnails 'cart-item-img-thumbnails' with {
+                                                                                    media: lineItem.cover,
+                                                                                    sizes: {
+                                                                                        'xs': '50px',
+                                                                                        'sm': '70px',
+                                                                                        'md': '90px',
+                                                                                        'lg': '100px'
+                                                                                    }
+                                                                                } %}
+                                                                            </a>
+                                                                        {% endif %}
+                                                                    </td>
+                                                                {% endblock %}
+
+                                                                {% block page_checkout_cart_line_item_details %}
+                                                                    <td class="cart-item-details">
+                                                                        <div class="cart-item-label">
+                                                                            <a href="{{ seoUrl('frontend.detail.page', {'productId': lineItem.referencedId}) }}">
+                                                                                {{ lineItem.label }}
+                                                                            </a>
+                                                                        </div>
+                                                                        
+                                                                        {% if lineItem.payload.options|length > 0 %}
+                                                                            <div class="cart-item-variant">
+                                                                                {% for option in lineItem.payload.options %}
+                                                                                    {{ option.group }}: {{ option.option }}{% if not loop.last %} | {% endif %}
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                        
+                                                                        {% if lineItem.payload.features|length > 0 %}
+                                                                            <div class="cart-item-features">
+                                                                                {% for feature in lineItem.payload.features %}
+                                                                                    {{ feature.name }}: {{ feature.value }}{% if not loop.last %} | {% endif %}
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    </td>
+                                                                {% endblock %}
+
+                                                                {% block page_checkout_cart_line_item_unit_price %}
+                                                                    <td class="cart-item-unit-price">
+                                                                        {{ lineItem.price.unitPrice|currency }}
+                                                                    </td>
+                                                                {% endblock %}
+
+                                                                {% block page_checkout_cart_line_item_quantity %}
+                                                                    <td class="cart-item-quantity">
+                                                                        {% if lineItem.quantityInformation %}
+                                                                            <form action="{{ path('frontend.checkout.line-item.change-quantity', {'id': lineItem.id}) }}"
+                                                                                  method="post"
+                                                                                  class="cart-quantity-form">
+                                                                                <select name="quantity" 
+                                                                                      class="quantity-select custom-select"
+                                                                                      data-form-auto-submit="true">
+                                                                                    {% for quantity in range(
+                                                                                        lineItem.quantityInformation.minPurchase,
+                                                                                        lineItem.quantityInformation.maxPurchase,
+                                                                                        lineItem.quantityInformation.purchaseSteps
+                                                                                    ) %}
+                                                                                        <option value="{{ quantity }}"
+                                                                                            {% if quantity == lineItem.quantity %} selected="selected"{% endif %}>
+                                                                                            {{ quantity }}
+                                                                                        </option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            </form>
+                                                                        {% endif %}
+                                                                    </td>
+                                                                {% endblock %}
+
+                                                                {% block page_checkout_cart_line_item_total_price %}
+                                                                    <td class="cart-item-total-price">
+                                                                        {{ lineItem.price.totalPrice|currency }}
+                                                                    </td>
+                                                                {% endblock %}
+
+                                                                {% block page_checkout_cart_line_item_remove %}
+                                                                    <td class="cart-item-remove">
+                                                                        <form action="{{ path('frontend.checkout.line-item.delete', {'id': lineItem.id}) }}"
+                                                                              method="post">
+                                                                            <button type="submit" 
+                                                                                    title="{{ "checkout.removeLineItem"|trans|striptags }}"
+                                                                                    class="btn-cart-item-remove">
+                                                                                {% sw_icon 'x' %}
+                                                                            </button>
+                                                                        </form>
+                                                                    </td>
+                                                                {% endblock %}
+                                                            </tr>
+                                                        {% endblock %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endblock %}
+                                </div>
+                            </div>
+
+                            {% block page_checkout_cart_promotion %}
+                                <div class="cart-promotion">
+                                    <div class="cart-promotion-header">
+                                        {{ "checkout.addPromotionLabel"|trans|sw_sanitize }}
+                                    </div>
+                                    <form action="{{ path('frontend.checkout.promotion.add') }}"
+                                          method="post">
+                                        <div class="input-group cart-promotion-form">
+                                            <input type="text"
+                                                   name="code"
+                                                   class="form-control"
+                                                   placeholder="{{ "checkout.addPromotionPlaceholder"|trans|sw_sanitize }}"
+                                                   aria-label="{{ "checkout.addPromotionLabel"|trans|striptags }}"
+                                                   aria-describedby="addPromotion"
+                                                   required="required">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="submit" id="addPromotion">
+                                                    {{ "checkout.addPromotionSubmit"|trans|sw_sanitize }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            {% endblock %}
+                        {% else %}
+                            {% block page_checkout_cart_empty %}
+                                <div class="cart-empty">
+                                    <div class="cart-empty-icon">
+                                        {% sw_icon 'bag-shopping' %}
+                                    </div>
+                                    <h2 class="cart-empty-title">
+                                        {{ "checkout.cartEmpty"|trans|sw_sanitize }}
+                                    </h2>
+                                    <div class="cart-empty-text">
+                                        {{ "checkout.cartEmptyDescription"|trans|sw_sanitize }}
+                                    </div>
+                                    <a href="{{ path('frontend.home.page') }}" class="btn btn-primary btn-continue-shopping">
+                                        {{ "checkout.continueShopping"|trans|sw_sanitize }}
+                                    </a>
+                                </div>
+                            {% endblock %}
+                        {% endif %}
+                    </div>
+                {% endblock %}
+
+                {% block page_checkout_cart_summary %}
+                    <div class="col-lg-4">
+                        {% if page.cart.lineItems|length > 0 %}
+                            <div class="cart-summary">
+                                <h3 class="cart-summary-header">
+                                    {{ "checkout.summaryHeader"|trans|sw_sanitize }}
+                                </h3>
+                                <div class="cart-summary-content">
+                                    {% block page_checkout_summary_content %}
+                                        <div class="cart-summary-row">
+                                            <span class="cart-summary-label">{{ "checkout.summarySubtotal"|trans|sw_sanitize }}</span>
+                                            <span class="cart-summary-value">{{ page.cart.price.positionPrice|currency }}</span>
+                                        </div>
+                                        
+                                        {% if page.cart.deliveries|length > 0 %}
+                                            <div class="cart-summary-row">
+                                                <span class="cart-summary-label">{{ "checkout.summaryShipping"|trans|sw_sanitize }}</span>
+                                                <span class="cart-summary-value">{{ page.cart.deliveries.first.shippingCosts.totalPrice|currency }}</span>
+                                            </div>
+                                        {% endif %}
+                                        
+                                        {% if page.cart.price.taxStatus != "tax-free" %}
+                                            {% for calculatedTax in page.cart.price.calculatedTaxes %}
+                                                <div class="cart-summary-row">
+                                                    <span class="cart-summary-label">{{ "checkout.summaryTax"|trans({'%rate%': calculatedTax.taxRate})|sw_sanitize }}</span>
+                                                    <span class="cart-summary-value">{{ calculatedTax.tax|currency }}</span>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        
+                                        {% for promotion in page.cart.lineItems %}
+                                            {% if promotion.type == "promotion" %}
+                                                <div class="cart-summary-row">
+                                                    <span class="cart-summary-label">{{ promotion.label }}</span>
+                                                    <span class="cart-summary-value">{{ promotion.price.totalPrice|currency }}</span>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                        
+                                        <div class="cart-summary-row cart-summary-total">
+                                            <span class="cart-summary-label">{{ "checkout.summaryTotal"|trans|sw_sanitize }}</span>
+                                            <span class="cart-summary-value">{{ page.cart.price.totalPrice|currency }}</span>
+                                        </div>
+                                    {% endblock %}
+                                    
+                                    <div class="cart-summary-tax-info">
+                                        {% if page.cart.price.taxStatus == "tax-free" %}
+                                            {{ "general.noTaxes"|trans|sw_sanitize }}
+                                        {% else %}
+                                            {{ "general.includeVat"|trans|sw_sanitize }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="cart-summary-actions">
+                                    <a href="{{ path('frontend.checkout.confirm.page') }}" class="btn btn-primary btn-checkout">
+                                        {{ "checkout.proceedToCheckout"|trans|sw_sanitize }}
+                                    </a>
+                                    <a href="{{ path('frontend.home.page') }}" class="btn btn-outline-secondary">
+                                        {{ "checkout.continueShopping"|trans|sw_sanitize }}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+
+        {% if page.cart.lineItems|length > 0 %}
+            {% block page_checkout_cart_product_suggestions %}
+                <div class="cart-product-suggestions">
+                    <h2 class="cart-suggestions-title">
+                        {{ "checkout.suggestionsHeader"|trans|sw_sanitize }}
+                    </h2>
+                    <div class="row product-listing">
+                        {% for product in page.products %}
+                            <div class="col-sm-6 col-lg-3">
+                                {% sw_include '@Storefront/storefront/component/product/card/box-standard.html.twig' with {
+                                    'product': product
+                                } %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endblock %}
+        {% endif %}
+    </div>
+{% endblock %}

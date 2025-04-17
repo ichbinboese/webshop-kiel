@@ -1,0 +1,143 @@
+{% sw_extends '@Storefront/storefront/layout/footer/footer.html.twig' %}
+
+{% block layout_footer_inner_container %}
+    <div class="container">
+        <div class="footer-main">
+            <div class="row">
+                {% block layout_footer_columns %}
+                    {% block layout_footer_column_service %}
+                        <div class="col-md-3 footer-column">
+                            <h4>{{ "footer.serviceTitle"|trans|sw_sanitize }}</h4>
+                            <ul class="footer-link-list">
+                                <li><a href="#">{{ "footer.contact"|trans|sw_sanitize }}</a></li>
+                                <li><a href="#">{{ "footer.shippingMethods"|trans|sw_sanitize }}</a></li>
+                                <li><a href="#">{{ "footer.paymentMethods"|trans|sw_sanitize }}</a></li>
+                                <li><a href="#">{{ "footer.faq"|trans|sw_sanitize }}</a></li>
+                                <li><a href="#">{{ "footer.returnPolicy"|trans|sw_sanitize }}</a></li>
+                            </ul>
+                        </div>
+                    {% endblock %}
+
+                    {% block layout_footer_column_shop %}
+                        <div class="col-md-3 footer-column">
+                            <h4>{{ "footer.shopTitle"|trans|sw_sanitize }}</h4>
+                            <ul class="footer-link-list">
+                                <li><a href="#">{{ "footer.aboutUs"|trans|sw_sanitize }}</a></li>
+                                <li><a href="#">{{ "footer.career"|trans|sw_sanitize }}</a></li>
+                                <li><a href="#">{{ "footer.pressArea"|trans|sw_sanitize }}</a></li>
+                                <li><a href="#">{{ "footer.affiliate"|trans|sw_sanitize }}</a></li>
+                                <li><a href="#">{{ "footer.stores"|trans|sw_sanitize }}</a></li>
+                            </ul>
+                        </div>
+                    {% endblock %}
+
+                    {% block layout_footer_column_contact %}
+                        <div class="col-md-3 footer-column">
+                            <h4>{{ "footer.contactTitle"|trans|sw_sanitize }}</h4>
+                            <div class="footer-contact">
+                                <div class="footer-contact-item">
+                                    {% sw_icon 'map-pin' %}
+                                    <div>
+                                        {{ "footer.companyName"|trans|sw_sanitize }}<br>
+                                        {{ "footer.companyStreet"|trans|sw_sanitize }}<br>
+                                        {{ "footer.companyZipCity"|trans|sw_sanitize }}
+                                    </div>
+                                </div>
+                                <div class="footer-contact-item">
+                                    {% sw_icon 'phone' %}
+                                    <div>
+                                        <a href="tel:+123456789">+123 456 789</a>
+                                    </div>
+                                </div>
+                                <div class="footer-contact-item">
+                                    {% sw_icon 'mail' %}
+                                    <div>
+                                        <a href="mailto:info@example.com">info@example.com</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="footer-social">
+                                <a href="#" title="Facebook">
+                                    {% sw_icon 'facebook' %}
+                                </a>
+                                <a href="#" title="Twitter">
+                                    {% sw_icon 'twitter' %}
+                                </a>
+                                <a href="#" title="Instagram">
+                                    {% sw_icon 'instagram' %}
+                                </a>
+                                <a href="#" title="YouTube">
+                                    {% sw_icon 'youtube' %}
+                                </a>
+                            </div>
+                        </div>
+                    {% endblock %}
+
+                    {% block layout_footer_column_newsletter %}
+                        <div class="col-md-3 footer-column">
+                            <h4>{{ "footer.newsletterTitle"|trans|sw_sanitize }}</h4>
+                            <div class="footer-newsletter">
+                                <form action="#" method="post">
+                                    <div class="input-group">
+                                        <input type="email" 
+                                               class="form-control" 
+                                               placeholder="{{ "footer.newsletterPlaceholder"|trans|sw_sanitize }}"
+                                               aria-label="{{ "footer.newsletterPlaceholder"|trans|sw_sanitize }}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit">
+                                                {{ "footer.newsletterSubmit"|trans|sw_sanitize }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <p class="privacy-policy">
+                                    {{ "footer.newsletterPrivacy"|trans|sw_sanitize }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            {% block layout_footer_bottom %}
+                <div class="footer-copyright">
+                    {% block layout_footer_copyright %}
+                        {{ "footer.copyrightInfo"|trans({
+                            '%year%': "now"|date('Y')
+                        })|sw_sanitize }}
+                    {% endblock %}
+                </div>
+
+                <div class="footer-bottom-links">
+                    {% block layout_footer_bottom_links %}
+                        <a href="#">{{ "footer.termsOfUse"|trans|sw_sanitize }}</a>
+                        <a href="#">{{ "footer.privacyPolicy"|trans|sw_sanitize }}</a>
+                        <a href="#">{{ "footer.imprint"|trans|sw_sanitize }}</a>
+                        <a href="#">{{ "footer.revocation"|trans|sw_sanitize }}</a>
+                    {% endblock %}
+                </div>
+
+                <div class="footer-payment-methods">
+                    {% block layout_footer_payment %}
+                        <span class="payment-method-image">
+                            {% sw_icon 'paypal' %}
+                        </span>
+                        <span class="payment-method-image">
+                            {% sw_icon 'credit-card' %}
+                        </span>
+                        <span class="payment-method-image">
+                            {% sw_icon 'sepa' %}
+                        </span>
+                        <span class="payment-method-image">
+                            {% sw_icon 'sofort' %}
+                        </span>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

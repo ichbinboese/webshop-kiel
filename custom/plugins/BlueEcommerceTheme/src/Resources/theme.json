@@ -1,0 +1,80 @@
+{
+  "name": "BlueEcommerceTheme",
+  "author": "Your Name",
+  "description": "A modern blue e-commerce theme",
+  "style": [
+    "@Storefront",
+    "app/storefront/src/scss/base.scss"
+  ],
+  "script": [
+    "@Storefront",
+    "app/storefront/src/main.js"
+  ],
+  "asset": [
+    "@Storefront"
+  ],
+  "config": {
+    "blocks": {
+      "themeColors": {
+        "label": {
+          "en-GB": "Theme colors",
+          "de-DE": "Theme-Farben"
+        }
+      },
+      "typography": {
+        "label": {
+          "en-GB": "Typography",
+          "de-DE": "Typografie"
+        }
+      },
+      "layout": {
+        "label": {
+          "en-GB": "Layout",
+          "de-DE": "Layout"
+        }
+      }
+    },
+    "fields": {
+      "sw-color-brand-primary": {
+        "label": {
+          "en-GB": "Primary brand color",
+          "de-DE": "Primäre Markenfarbe"
+        },
+        "type": "color",
+        "value": "#005EB8",
+        "editable": true,
+        "block": "themeColors"
+      },
+      "sw-color-brand-secondary": {
+        "label": {
+          "en-GB": "Secondary brand color",
+          "de-DE": "Sekundäre Markenfarbe"
+        },
+        "type": "color",
+        "value": "#0072CE",
+        "editable": true,
+        "block": "themeColors"
+      },
+      "sw-border-radius": {
+        "label": {
+          "en-GB": "Border radius",
+          "de-DE": "Rahmenradius"
+        },
+        "type": "text",
+        "value": "4px",
+        "editable": true,
+        "block": "layout"
+      },
+      "sw-font-family-base": {
+        "label": {
+          "en-GB": "Font family",
+          "de-DE": "Schriftfamilie"
+        },
+        "type": "fontFamily",
+        "value": "'Open Sans', sans-serif",
+        "editable": true,
+        "block": "typography"
+      }
+    }
+  }
+}

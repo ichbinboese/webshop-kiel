@@ -1,0 +1,234 @@
+.header-main {
+  background-color: #fff;
+  border-bottom: 1px solid $sw-border-color;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
+  .container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+// Logo
+.header-logo-main {
+  img {
+    height: 40px;
+    width: auto;
+  }
+}
+
+// Search
+.header-search {
+  flex-grow: 1;
+  max-width: 600px;
+  margin: 0 auto;
+  
+  .header-search-form {
+    position: relative;
+    
+    .form-control {
+      height: 44px;
+      border-radius: 3px;
+      border: 2px solid $sw-color-brand-primary;
+      padding-right: 50px;
+      background-color: #fff;
+      
+      &:focus {
+        box-shadow: none;
+        border-color: $sw-color-brand-secondary;
+      }
+    }
+    
+    .btn-search {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 44px;
+      width: 44px;
+      background-color: $sw-color-brand-primary;
+      border-color: $sw-color-brand-primary;
+      color: #ffffff;
+      border-radius: 0 3px 3px 0;
+      
+      &:hover {
+        background-color: darken($sw-color-brand-primary, 5%);
+      }
+      
+      .icon {
+        height: 18px;
+        width: 18px;
+      }
+    }
+  }
+}
+
+// Actions (account, wishlist, cart)
+.header-actions {
+  .btn {
+    color: $sw-text-color;
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    
+    &:hover {
+      color: $sw-color-brand-primary;
+    }
+    
+    .icon {
+      height: 24px;
+      width: 24px;
+      margin-bottom: 0.25rem;
+    }
+  }
+  
+  .header-cart-total {
+    color: $sw-color-brand-primary;
+    font-weight: 600;
+  }
+  
+  .header-cart-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 18px;
+    width: 18px;
+    background-color: $sw-color-brand-primary;
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+
+// Top bar
+.header-top-bar {
+  background-color: $sw-color-brand-primary;
+  color: #fff;
+  font-size: 0.875rem;
+  padding: 0.5rem 0;
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  a {
+    color: #fff;
+    margin-right: 1rem;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+    }
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+// Main navigation (category navigation)
+.main-navigation {
+  background-color: $sw-color-brand-primary;
+  
+  .nav-item {
+    position: relative;
+    
+    .nav-link {
+      color: #fff;
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      
+      &:hover {
+        background-color: $sw-nav-hover-background;
+      }
+    }
+    
+    &.active .nav-link {
+      background-color: $sw-nav-hover-background;
+    }
+  }
+  
+  // Dropdown styling
+  .dropdown-menu {
+    margin-top: 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+      
+      &:hover, &:focus, &.active {
+        background-color: $sw-color-light-blue;
+        color: $sw-color-brand-primary;
+      }
+    }
+  }
+  
+  // Mega menu styling for larger dropdowns
+  .mega-menu-wrapper {
+    width: 100%;
+    padding: 1.5rem;
+    
+    .mega-menu-title {
+      color: $sw-color-brand-primary;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+    
+    .mega-menu-list {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 1.5rem;
+      
+      li {
+        margin-bottom: 0.5rem;
+        
+        a {
+          color: $sw-text-color;
+          
+          &:hover {
+            color: $sw-color-brand-primary;
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Mobile header adjustments
+@media (max-width: 991px) {
+  .header-search {
+    max-width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .header-logo-main {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .header-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+  }
+  
+  .main-navigation {
+    .navbar-toggler {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.5);
+      
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

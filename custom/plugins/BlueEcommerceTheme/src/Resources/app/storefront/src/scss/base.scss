@@ -1,0 +1,74 @@
+// Import all necessary files
+@import 'variables.scss';
+@import 'overrides.scss';
+
+// Import layout components
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/navigation';
+
+// Import specific components
+@import 'component/product-box';
+@import 'component/product-detail';
+@import 'component/cart';
+@import 'component/checkout';
+
+// Custom global styles
+body {
+  font-family: var(--sw-font-family-base);
+  color: $sw-text-color;
+  background-color: $sw-background-color;
+}
+
+.btn-primary {
+  background-color: $sw-color-brand-primary;
+  border-color: $sw-color-brand-primary;
+  
+  &:hover {
+    background-color: darken($sw-color-brand-primary, 10%);
+    border-color: darken($sw-color-brand-primary, 10%);
+  }
+}
+
+.btn-secondary {
+  background-color: $sw-color-brand-secondary;
+  border-color: $sw-color-brand-secondary;
+  
+  &:hover {
+    background-color: darken($sw-color-brand-secondary, 10%);
+    border-color: darken($sw-color-brand-secondary, 10%);
+  }
+}
+
+// Custom card styling
+.card {
+  border-radius: $sw-border-radius;
+  box-shadow: $sw-card-shadow;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $sw-card-shadow-hover;
+  }
+}
+
+// Price styling
+.product-price {
+  font-weight: 700;
+  color: $sw-color-price;
+}
+
+// Badge styling
+.badge-primary {
+  background-color: $sw-color-brand-primary;
+}
+
+.badge-secondary {
+  background-color: $sw-color-brand-secondary;
+}
+
+// Sale badge
+.badge-discount {
+  background-color: $sw-color-price-discount;
+  color: #fff;
+}

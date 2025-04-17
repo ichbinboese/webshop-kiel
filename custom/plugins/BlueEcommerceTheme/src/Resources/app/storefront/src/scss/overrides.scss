@@ -1,0 +1,109 @@
+// This file contains SCSS variable overrides for Shopware's default styles
+
+// Override Bootstrap variables
+$primary: $sw-color-brand-primary;
+$secondary: $sw-color-brand-secondary;
+$success: $sw-color-success;
+$info: $sw-color-info;
+$warning: $sw-color-warning;
+$danger: $sw-color-danger;
+
+$border-radius: $sw-border-radius;
+$border-radius-lg: calc(#{$sw-border-radius} * 1.5);
+$border-radius-sm: calc(#{$sw-border-radius} * 0.75);
+
+$font-family-base: $sw-font-family-base;
+$font-size-base: $sw-font-size-base;
+
+// Override Shopware specific variables
+:root {
+  --sw-color-brand-primary: #{$sw-color-brand-primary};
+  --sw-color-brand-secondary: #{$sw-color-brand-secondary};
+  --sw-border-radius: #{$sw-border-radius};
+  --sw-font-family-base: #{$sw-font-family-base};
+  
+  // Override more Shopware CSS variables as needed
+  --sw-color-price: #{$sw-color-price};
+  --sw-color-price-reduced: #{$sw-color-price-discount};
+  
+  // Navigation
+  --sw-navigation-color-link: #{$sw-nav-text-color};
+  --sw-navigation-color-background: #{$sw-nav-background};
+  
+  // Buttons
+  --sw-button-primary-color: #fff;
+  --sw-button-primary-bg: #{$sw-color-brand-primary};
+  --sw-button-primary-border-color: #{$sw-color-brand-primary};
+  --sw-button-primary-hover-color: #fff;
+  --sw-button-primary-hover-bg: #{darken($sw-color-brand-primary, 7.5%)};
+  --sw-button-primary-hover-border-color: #{darken($sw-color-brand-primary, 10%)};
+  
+  --sw-button-secondary-color: #fff;
+  --sw-button-secondary-bg: #{$sw-color-brand-secondary};
+  --sw-button-secondary-border-color: #{$sw-color-brand-secondary};
+  --sw-button-secondary-hover-color: #fff;
+  --sw-button-secondary-hover-bg: #{darken($sw-color-brand-secondary, 7.5%)};
+  --sw-button-secondary-hover-border-color: #{darken($sw-color-brand-secondary, 10%)};
+}
+
+// Headline styles
+h1, .h1 {
+  font-size: $sw-font-size-h1;
+  font-weight: 600;
+}
+
+h2, .h2 {
+  font-size: $sw-font-size-h2;
+  font-weight: 600;
+}
+
+h3, .h3 {
+  font-size: $sw-font-size-h3;
+  font-weight: 600;
+}
+
+h4, .h4 {
+  font-size: $sw-font-size-h4;
+  font-weight: 600;
+}
+
+h5, .h5 {
+  font-size: $sw-font-size-h5;
+  font-weight: 600;
+}
+
+h6, .h6 {
+  font-size: $sw-font-size-h6;
+  font-weight: 600;
+}
+
+// Override link styles
+a {
+  color: $sw-color-brand-primary;
+  
+  &:hover {
+    color: darken($sw-color-brand-primary, 15%);
+    text-decoration: none;
+  }
+}
+
+// Form controls override
+.form-control {
+  border-radius: $sw-border-radius;
+  border-color: $sw-border-color;
+  
+  &:focus {
+    border-color: $sw-color-brand-primary;
+    box-shadow: 0 0 0 0.2rem rgba($sw-color-brand-primary, 0.25);
+  }
+}
+
+// Custom select styling
+.custom-select {
+  border-radius: $sw-border-radius;
+  
+  &:focus {
+    border-color: $sw-color-brand-primary;
+    box-shadow: 0 0 0 0.2rem rgba($sw-color-brand-primary, 0.25);
+  }
+}
